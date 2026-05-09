@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SLA Optimizer | EDF</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/inter-ui/3.19.3/inter.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <!-- Ícones de fonte simples -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="app-layout">
+        <!-- Sidebar / Board Controls -->
+        <aside class="sidebar">
+            <header class="app-header">
+                <div class="logo">
+                    <i class="fa-solid fa-layer-group"></i>
+                </div>
+                <div>
+                    <h1>SLA Optimizer</h1>
+                    <p>Minimum Lateness (EDF)</p>
+                </div>
+            </header>
+
+            <div class="task-input-section">
+                <h3><i class="fa-solid fa-plus"></i> Nova Tarefa</h3>
+                <form id="task-form">
+                    <div class="form-control">
+                        <label for="task-name">Título</label>
+                        <input type="text" id="task-name" placeholder="Ex: Correção de Bug crítico" required
+                            autocomplete="off">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-control">
+                            <label for="task-duration"><i class="fa-regular fa-clock"></i> Duração (h)</label>
+                            <input type="number" id="task-duration" placeholder="Ex: 2" min="0.1" step="0.1" required>
+                        </div>
+                        <div class="form-control">
+                            <label for="task-deadline"><i class="fa-regular fa-calendar-xmark"></i> Deadline (h)</label>
+                            <input type="number" id="task-deadline" placeholder="Ex: 5" min="0.1" step="0.1" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn primary btn-block">
+                        Adicionar ao Backlog
+                    </button>
+                </form>
+            </div>
+
+            <div class="backlog-header">
+                <h3>Backlog <span class="badge count-badge" id="task-count">0</span></h3>
+            </div>
+
+            <div class="task-list" id="task-list">
+                <!-- Cards renderizados no JS -->
+                <div class="empty-state">
+                    <i class="fa-solid fa-inbox"></i>
+                    <p>Nenhuma tarefa no backlog.</p>
+                </div>
+            </div>
+
+            <div class="action-section">
+                <div class="form-control" style="margin-bottom: 1.2rem;">
+                    <label for="start-time" style="color: var(--primary)"><i class="fa-solid fa-clock"></i> Início do
+                        Expediente (h)</label>
+                    <input type="number" id="start-time" value="8" min="0" max="23" step="0.5" required>
+                </div>
+                <button id="calculate-btn" class="btn success btn-block" disabled>
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Calcular Cronograma Ideal
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content / Results -->
+        <main class="main-content">
+            <div class="placeholder-state" id="placeholder-state">
+                <!-- <img src="https://cdn-icons-png.flaticon.com/512/8297/8297059.png" alt="Planner" style="width: 120px; opacity: 0.1; filter: grayscale(1);"> -->
+                <h2>Otimize sua fila de trabalho</h2>
+                <p>Adicione as tarefas no painel ao lado e deixe o algoritmo EDF calcular a ordem perfeita para
+                    minimizar seus atrasos de SLA.</p>
+            </div>
+
+            <div id="results-panel" class="results-layout" style="display: none;">
+                <div class="board-header">
+                    <h2>Plano de Execução Otimizado</h2>
+                    <p>Ordem calculada utilizando Earliest Deadline First</p>
+                </div>
+
+                <div class="summary-metrics">
+                    <div class="metric-card danger-accent">
+                        <div class="metric-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                        <div class="metric-info">
+                            <span class="label">Pior Atraso (Máximo)</span>
+                            <span class="value" id="max-lateness">0h</span>
+                        </div>
+                    </div>
+                    <div class="metric-card info-accent">
+                        <div class="metric-icon"><i class="fa-solid fa-stopwatch"></i></div>
+                        <div class="metric-info">
+                            <span class="label">Tempo Total Estimado</span>
+                            <span class="value" id="total-time">0h</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gantt-section">
+                    <div class="section-title">
+                        <h3>Visualização na Linha do Tempo</h3>
+                        <div class="legend">
+                            <span class="legend-item"><i class="fa-solid fa-circle" style="color: var(--success)"></i>
+                                No Prazo</span>
+                            <span class="legend-item"><i class="fa-solid fa-circle" style="color: var(--danger)"></i>
+                                Atrasado</span>
+                        </div>
+                    </div>
+
+                    <div class="gantt-container">
+                        <div class="gantt-chart" id="gantt-chart">
+                            <!-- Blocos Gantt injetados aqui -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-details">
+                    <h3>Detalhes por Tarefa</h3>
+                    <div class="modern-table">
+                        <table id="results-table">
+                            <thead>
+                                <tr>
+                                    <th>Ordem</th>
+                                    <th>Tarefa</th>
+                                    <th>Janela de Execução</th>
+                                    <th>Deadline Prometido</th>
+                                    <th>Status SLA</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- JS Injeta os resultados -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="/static/js/scripts.js"></script>
+</body>
+
+</html>
