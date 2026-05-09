@@ -4,12 +4,13 @@ Responsável pela lógica de minimização de atraso máximo.
 """
 
 
-def minimizar_atraso(tarefas):
+def minimizar_atraso(tarefas, hora_inicio=0.0):
     """
     Algoritmo EDF (Earliest Deadline First) para minimizar o atraso máximo.
     
     Args:
         tarefas: Lista de dicts com {'nome', 'duracao', 'deadline', 'cliente', 'prioridade'}
+        hora_inicio: Tempo de início do expediente/logística (float)
     
     Returns:
         tuple: (cronograma com detalhes, atraso_maximo, tempo_total, atrasos_individuais)
@@ -17,7 +18,7 @@ def minimizar_atraso(tarefas):
     # Ordena as tarefas por deadline (Earliest Deadline First)
     tarefas_ordenadas = sorted(tarefas, key=lambda x: x['deadline'])
     
-    tempo_atual = 0
+    tempo_atual = hora_inicio
     cronograma = []
     atraso_maximo = 0
     atrasos_individuais = []
@@ -32,7 +33,7 @@ def minimizar_atraso(tarefas):
             
         cronograma.append({
             'nome': t['nome'],
-            'cliente': t.get('cliente', 'N/A'),
+            'cliente' : t.get('cliente', 'N/A'),
             'prioridade': t.get('prioridade', 'Normal'),
             'duracao': t['duracao'],
             'inicio': inicio,
