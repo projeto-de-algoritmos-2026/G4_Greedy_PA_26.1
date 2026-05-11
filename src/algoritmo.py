@@ -1,9 +1,3 @@
-"""
-Módulo de implementação do algoritmo EDF (Earliest Deadline First).
-Responsável pela lógica de minimização de atraso máximo.
-"""
-
-
 def minimizar_atraso(tarefas, hora_inicio=0.0):
     """
     Algoritmo EDF (Earliest Deadline First) para minimizar o atraso máximo.

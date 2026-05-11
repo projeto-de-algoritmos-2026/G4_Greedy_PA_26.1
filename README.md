@@ -56,12 +56,6 @@ python app.py
 
 4. Acessar a interface em `http://localhost:5000`
 
-Para expor em rede local (ex: Raspberry Pi):
-
-```bash
-flask run --host=0.0.0.0 --port=5000
-```
-
 ## Funcionalidades
 
 - Interface web para adicionar tarefas (título, duração, deadline)
@@ -81,8 +75,6 @@ flask run --host=0.0.0.0 --port=5000
 │   ├── __init__.py
 │   ├── algoritmo.py          # Implementação do EDF
 │   ├── display.py            # Funções de exibição
-│   ├── logic.py              # Lógica principal (CLI)
-│   └── simulator.py          # Utilitários de simulação
 ├── templates/
 │   └── index.html            # Interface web
 └── static/
