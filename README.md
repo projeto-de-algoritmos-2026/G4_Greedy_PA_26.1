@@ -15,7 +15,7 @@ Conteúdo da Disciplina: Algoritmos Ambiciosos <br>
 
 ## Link da gravação
 
-[Assista ao vídeo no Youtube]()
+[Assista ao vídeo no Youtube](https://youtu.be/e6p90RMoTzQ)
 
 ## Sobre
 
@@ -23,9 +23,7 @@ Aplicação web que implementa o algoritmo **Earliest Deadline First (EDF)** par
 
 ## Screenshots
 
-![screenshot1]()
-![screenshot2]()
-![screenshot3]()
+![alt text](image.png)
 
 ## Instalação
 
